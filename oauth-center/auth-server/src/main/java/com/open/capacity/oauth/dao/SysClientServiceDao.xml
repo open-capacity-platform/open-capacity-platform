@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.open.capacity.oauth.dao.SysClientServiceDao">
+
+	<update id="delete">
+		delete from sys_client_service
+		<where>
+			<if test="clientId != null">
+				and clientId = #{clientId}
+			</if>
+			<if test="serviceId != null">
+				and serviceId = #{serviceId}
+			</if>
+		</where>
+	</update>
+
+	<select id="findServicesBySlientIds" resultType="com.open.capacity.oauth.model.SysService">
+		select distinct t.* from sys_service t
+		inner join sys_client_service r on r.serviceId = t.id
+		where
+		r.clientId in
+		<foreach collection="clientIds" index="index" item="clientId"
+			open="(" separator="," close=")">
+			#{clientId}
+		</foreach>
+		ORDER BY sort ASC
+	</select>
+</mapper>

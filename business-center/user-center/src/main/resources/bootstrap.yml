@@ -1,0 +1,24 @@
+#端口配置
+server:
+  port: 7000   #固定端口
+#  port: ${randomServerPort.value[7000,7005]}  #随机端口
+grpc:         #随机端口
+  server:
+    port: 0
+#服务名称
+spring:
+  application:
+    name: user-center
+  cloud:
+    nacos:
+      discovery:
+        server-addr:  127.0.0.1:8848    
+    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always  

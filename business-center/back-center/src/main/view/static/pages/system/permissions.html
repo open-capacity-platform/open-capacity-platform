@@ -1,0 +1,158 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">权限管理</h2>
+        <span class="layui-breadcrumb pull-right">
+          <a href="#!console">首页</a>
+          <a><cite>权限管理</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form toolbar">
+            搜索：<input id="auth-edit-search" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
+            <button id="auth-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+            <button id="auth-btn-add" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+        </div>
+
+        <!-- 数据表格 -->
+        <table class="layui-table" id="auth-table" lay-filter="auth-table"></table>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="auth-state">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<!-- 表单弹窗 -->
+<script type="text/html" id="auth-model">
+    <form id="auth-form" lay-filter="auth-form" class="layui-form model-form">
+        <input name="id" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限标识</label>
+            <div class="layui-input-block">
+                <input name="permission" placeholder="请输入权限标识" type="text" class="layui-input" maxlength="20"
+                       lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input name="name" placeholder="请输入名称" type="text" class="layui-input" maxlength="20"
+                       lay-verify="required" required />
+            </div>
+        </div>
+        <div class="layui-form-item model-form-footer">
+            <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
+            <button class="layui-btn" lay-filter="auth-form-submit" lay-submit>保存</button>
+        </div>
+    </form>
+</script>
+
+
+<script>
+    layui.use(['form', 'table', 'util', 'config', 'admin'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var config = layui.config;
+        var layer = layui.layer;
+        var util = layui.util;
+        var admin = layui.admin;
+
+        // 渲染表格
+        table.render({
+            elem: '#auth-table',
+            url: config.base_server + 'api-user/permissions',
+            where: {
+                access_token: config.getToken().access_token
+            },
+            page: true,
+            cols: [[
+                {type: 'numbers'},
+                {field: 'name', sort: true, title: '权限名称'},
+                {field: 'permission', sort: true, title: '权限标识'},
+                {
+                    field: 'createTime', sort: true, templet: function (d) {
+                        return util.toDateString(d.createTime);
+                    }, title: '创建时间'
+                },
+                {templet: '#auth-state', width: 120, align: 'center', title: '操作'}
+            ]]
+        });
+
+        // 工具条点击事件
+        table.on('tool(auth-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'edit') { // 修改
+                showEditModel(data);
+            } else if (layEvent === 'del') { // 重置密码
+                layer.confirm('确定删除此权限吗？', function () {
+                    layer.load(2);
+
+                    admin.req('api-user/permissions/'+obj.data.id, {  }, function (data) {
+                        layer.closeAll('loading');
+                        if (data.resp_code == 0) {
+                            layer.msg(data.resp_msg, {icon: 1, time: 500});
+                            table.reload('auth-table', {});
+                        } else {
+                            layer.msg(data.resp_msg, {icon: 2, time: 500});
+                        }
+                    }, 'DELETE');
+
+                });
+            }
+        });
+
+        // 添加按钮点击事件
+        $('#auth-btn-add').click(function () {
+            showEditModel();
+        });
+
+        // 显示编辑弹窗
+        var showEditModel = function (data) {
+            layer.open({
+                type: 1,
+                title: data ? '修改权限' : '添加权限',
+                area: '450px',
+                offset: '120px',
+                content: $('#auth-model').html(),
+                success: function () {
+                    $('#auth-form')[0].reset();
+                    $('#auth-form').attr('method', 'POST');
+                    if (data) {
+                        form.val('auth-form', data);
+                        $('#auth-form').attr('method', 'POST');
+                    }
+                }
+            });
+        };
+
+        // 表单提交事件
+        form.on('submit(auth-form-submit)', function (data) {
+            layer.load(2);
+            admin.req('api-user/permissions/saveOrUpdate', JSON.stringify(data.field), function (data) {
+                layer.closeAll('loading');
+                console.log(data);
+                if (data.resp_code == 0) {
+                    layer.msg(data.resp_msg, {icon: 1, time: 500});
+                    table.reload('auth-table');
+                    layer.closeAll('page');
+                } else {
+                    layer.msg(data.resp_msg, {icon: 2, time: 500});
+                }
+            }, $('#auth-form').attr('method'));
+            return false;
+        });
+
+        // 搜索按钮点击事件
+        $('#auth-btn-search').click(function () {
+            var key = $('#auth-edit-search').val();
+            table.reload('auth-table', {where: {searchKey: key}});
+        });
+
+
+
+    });
+</script>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.open.capacity.user.dao.SysRoleMenuDao">
+
+	<update id="delete">
+		delete from sys_role_menu
+		<where>
+			<if test="roleId != null">
+				and roleId = #{roleId}
+			</if>
+			<if test="menuId != null">
+				and menuId = #{menuId}
+			</if>
+		</where>
+	</update>
+
+	<select id="findMenusByRoleIds" resultType="com.open.capacity.model.system.SysMenu">
+		select distinct t.* from sys_menu t
+		inner join sys_role_menu r on r.menuId = t.id
+		where
+		r.roleId in
+		<foreach collection="roleIds" index="index" item="roleId"
+			open="(" separator="," close=")">
+			#{roleId}
+		</foreach>
+		ORDER BY sort ASC
+	</select>
+</mapper>

@@ -1,0 +1,143 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">服务治理</h2>
+        <span class="layui-breadcrumb pull-right">
+          <a href="#!console">首页</a>
+          <a><cite>服务治理</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+
+        <table class="layui-table" id="eureka-table" lay-filter="eureka-table"></table>
+
+    </div>
+</div>
+
+<!-- 表格状态列 -->
+<script type="text/html" id="eureka-tpl-state">
+    <input type="checkbox" lay-filter="eureka-tpl-state" value="{{d.app}}/{{d.instanceId}}" lay-skin="switch" lay-text="正常|锁定"
+           {{d.status=='UP'?'checked':''}}/>
+</script>
+
+<!-- 元数据操作列 -->
+<script type="text/html" id="eureka-table-bar">
+    <a class="layui-btn layui-btn-primary layui-btn-xs"  lay-filter="eureka-tpl-state" value="{{d.app}}/{{d.instanceId}}"  lay-event="edit">添加</a>
+</script>
+
+
+<script>
+    layui.use(['form', 'table', 'util', 'config', 'admin'], function () {
+        var form = layui.form;
+        var table = layui.table;
+        var config = layui.config;
+        var layer = layui.layer;
+        var util = layui.util;
+        var admin = layui.admin;
+
+
+        var renderTable = function () {
+            admin.req('api-eureka/eureka/apps', {}, function (data) {
+                var applications = new Array();
+                for (var i = 0; i <  data.applications.application.length; i++) {
+                    var instances = data.applications.application[i].instance;
+                    for (var j = 0; j < instances.length; j++ ){
+                        var instance = instances[j];
+                        applications.push(instance);
+                    }
+                }
+                // console.log(applications);
+
+                // // 渲染表格
+                table.render({
+                    elem: '#eureka-table',
+                    data: applications,
+                    page: false,
+                    cols: [[
+                        {type: 'numbers'},
+                        {field: 'app', sort: true, title: '服务名称'},
+                        {field: 'ipAddr', sort: true, title: 'IP地址'},
+                        {field: 'homePageUrl', sort: true, title: '页面地址'},
+                        {
+                            field: 'status', align: 'center',templet: function (d) {
+                                if (d.status == 'UP'){
+                                    return '<span style="color: #01AAED;" >正常</span>';
+                                }else if(d.status == 'OUT_OF_SERVICE'){
+                                    return '<span style="color: #FF0000;">暂停</span>';
+                                }else if(d.status == 'DOWN'){
+                                    return '<span style="color: #FF0000;">DOWN</span>';
+                                }
+                            }, title: '状态'
+
+                        },
+                        {field: 'enabled', sort: true, templet: '#eureka-tpl-state', title: '操作'} ,
+                        {align: 'center', toolbar: '#eureka-table-bar', title: '元信息'}
+                    ]]
+                });
+            }, 'GET');
+        };
+
+        renderTable();
+
+        // 修改状态
+        form.on('switch(eureka-tpl-state)', function (obj) {
+            layer.load(2);
+            // console.log(obj.elem.value)
+            var status = obj.elem.checked ? 'UP' : 'OUT_OF_SERVICE';
+            // http://127.0.0.1:1111/eureka/apps/AUTH-GATEWAY/auth-gateway:192.168.31.162:9200/status?value=UP
+            		
+            if(status == 'OUT_OF_SERVICE'){
+	            admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status?value="+status, {}, function (data) {
+	                if (data.code == 200){
+	                    setTimeout(function (args) {
+	                        layer.closeAll('loading');
+	                        admin.events.refresh();
+	                    },3000);
+	                }
+	            }, 'PUT');
+            }else if(status == 'UP'){
+            	
+            	admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status", {}, function (data) {
+	                if (data.code == 200){
+	                	admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status?value="+status, {}, function (data) {
+	    	                if (data.code == 200){
+	    	                    setTimeout(function (args) {
+	    	                        layer.closeAll('loading');
+	    	                        admin.events.refresh();
+	    	                    },3000);
+	    	                }
+	    	            }, 'PUT');
+	                }
+	            }, 'DELETE');
+            	
+            	
+            	
+            	
+            }		
+        });
+
+        
+        // 工具条点击事件
+        table.on('tool(eureka-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'edit') { // 修改
+              showEditModel(data);
+            }  
+        });
+        
+        //显示表单弹窗
+        var showEditModel = function (data) {
+             
+            admin.putTempData('t_eureka', data);
+            var title = data ? '修改元信息' : '添加元信息';
+            admin.popupCenter({
+                title: title,
+                path: 'pages/eureka/eureka_form.html',
+                finish: function () {
+                    table.reload('eureka-table', {});
+                }
+            });
+        };
+    });
+</script>

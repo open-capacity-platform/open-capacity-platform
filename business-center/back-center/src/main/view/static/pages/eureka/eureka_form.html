@@ -1,0 +1,51 @@
+<!-- eureka表单弹窗 -->
+<form id="eureka-form" lay-filter="eureka-form" class="layui-form model-form">
+    <input name="id" type="hidden"/>
+     
+ 	   <div class="layui-form-item">
+        <label class="layui-form-label">版本</label>
+        <div class="layui-input-block">
+            <select name="tag" id="tag">
+                <option value="dev">DEV</option>
+                <option value="uat">UAT</option>
+                <option value="prod">PROD</option>
+            </select>
+        </div>
+    </div>
+ 
+ 
+    <div class="layui-form-item model-form-footer">
+        <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
+        <button class="layui-btn" lay-filter="eureka-form-submit" lay-submit>保存</button>
+    </div>
+</form>
+
+<script>
+    layui.use(['layer', 'admin', 'form', 'formSelects'], function () {
+        var layer = layui.layer;
+        var admin = layui.admin;
+        var form = layui.form;
+        var formSelects = layui.formSelects;
+
+        //渲染下拉菜单
+        form.render();
+        
+		// 回显eureka数据
+        var eureka = admin.getTempData('t_eureka');
+		
+        // 表单提交事件
+        form.on('submit(eureka-form-submit)', function (data) {
+            layer.load(2);
+            debugger ;
+            admin.req('api-eureka/eureka/apps/'+eureka.app+'/'+eureka.instanceId+"/metadata?tag="+data.field.tag, {}, function (data) {
+            	layer.closeAll('loading');
+            	if (data.code == 200){
+            		
+            		  layer.msg('操作成功', {icon: 1, time: 500});
+                      admin.finishPopupCenter();
+                }
+            }, 'PUT');
+            return false;
+        });
+    });
+</script>

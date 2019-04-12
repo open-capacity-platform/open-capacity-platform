@@ -1,0 +1,25 @@
+server:
+  port: 8089
+  servlet:
+    context-path: /uniServiceAccess 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always 
+      
+#jasypt:
+#  encryptor:
+#    password: neusoft      
+
+ 
+logging:
+  level:
+    root: INFO
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+    com.central: DEBUG  

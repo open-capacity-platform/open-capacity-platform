@@ -1,0 +1,12 @@
+#端口
+server:
+  port: 9997
+#  context-path: /clientOne #2.0不再使用此方式配置
+#服务名称
+spring:
+  application:
+    name: auth-sso
+  cloud:
+    nacos:
+      discovery:
+        server-addr:  127.0.0.1:8848  

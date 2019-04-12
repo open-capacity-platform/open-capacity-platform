@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+ 
+option java_package = "com.open.capacity.grpc.lib";
+
+service Biz {
+    rpc Process ( GprcRequest) returns (  GprcReply) {}
+
+}
+message GprcRequest {
+    string name = 1;
+}
+message GprcReply {
+    string message = 1;
+}
+
+

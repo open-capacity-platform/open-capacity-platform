@@ -1,0 +1,28 @@
+package ${package}.${moduleName}.dao;
+
+import ${package}.${moduleName}.entity.${className};
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+import java.util.Map;
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Mapper
+public interface ${className}Dao  {
+
+    int save(${className} ${classname});
+
+    int update(${className} ${classname});
+
+    int delete(Long id);
+
+    List<${className}> findAll(Map<String, Object> params);
+
+
+
+}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${package}.${moduleName}.dao.${className}Dao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="${package}.${moduleName}.entity.${className}" id="${classname}Map">
+#foreach($column in $columns)
+        <result property="${column.attrname}" column="${column.columnName}"/>
+#end
+    </resultMap>
+
+    <insert id="save">
+        insert into ${tableName}(
+            #foreach($column in $columns)
+                    #if( $!{velocityCount} == $!{columns.size()})
+                        ${column.columnName}
+                    #else
+                        ${column.columnName},
+                    #end
+            #end
+      ) values (
+         #foreach($column in $columns)
+            #if( $!{velocityCount} == $!{columns.size()})
+               #{${column.columnName}}
+               #else
+               #{ ${column.columnName}},
+            #end
+         #end
+      )
+    </insert>
+
+    <update id="update">
+        update ${tableName}
+        <set>
+            #foreach($column in $columns)
+                <if test="${column.columnName} != null">
+                    ${column.columnName} = #{${column.columnName}},
+                </if>
+            #end
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int" flushCache="true">
+        delete from ${tableName} where id = #{id}
+    </delete>
+
+    <select id="findAll" resultType="${package}.${moduleName}.entity.${className}">
+        select * from ${tableName} t
+    </select>
+
+</mapper>

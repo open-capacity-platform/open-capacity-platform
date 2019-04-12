@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.open.capacity.user.dao.SysUserDao">
+
+	<update id="updateByOps">
+		update sys_user
+		<set>
+			<if test="password != null and password != ''">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="nickname != null and nickname != ''">
+				nickname = #{nickname,jdbcType=VARCHAR},
+			</if>
+			<if test="headImgUrl != null and headImgUrl != ''">
+				headImgUrl = #{headImgUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null and phone != ''">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=BIT},
+			</if>
+			<if test="enabled != null">
+				enabled = #{enabled,jdbcType=BIT},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<sql id="where">
+		<where>
+			<if test="id != null and id != ''">
+				and t.id like concat('%', #{id}, '%')
+			</if>
+			<if test="username != null and username != ''">
+				and t.username like concat('%', #{username}, '%')
+			</if>
+			<if test="nickname != null and nickname != ''">
+				and t.nickname like concat('%', #{nickname}, '%')
+			</if>
+			<if test="enabled != null and enabled != ''">
+				and t.enabled = #{enabled}
+			</if>
+			<if test="type != null and type != ''">
+				and t.type = #{type}
+			</if>
+				
+			
+			<if test="searchKey != null and searchKey != '' and searchKey=='user_id'">
+				and t.id  like concat('%', #{searchValue}, '%')   
+			</if>
+			
+			<if test="searchKey != null and searchKey != '' and searchKey=='username'">
+				and t.username  like concat('%', #{searchValue}, '%')   
+			</if>
+			
+			<if test="searchKey != null and searchKey != '' and searchKey=='nick_name'">
+				and t.nickname  like concat('%', #{searchValue}, '%')   
+			</if>
+			
+			<if test="searchKey != null and searchKey != '' and searchKey=='phone'">
+				and t.phone  like concat('%', #{searchValue}, '%')   
+			</if>
+			
+		</where>
+	</sql>
+	<select id="count" resultType="int">
+		select count(*) from sys_user t
+		<include refid="where" />
+	</select>
+
+	<select id="findList" resultType="com.open.capacity.model.system.SysUser">
+		select * from sys_user t
+		<include refid="where" />
+		order by t.id desc
+
+		<if test="page != null and page >= 0 and limit != null and limit > 0">
+		limit #{page},#{limit}
+		</if>
+	</select>
+</mapper>

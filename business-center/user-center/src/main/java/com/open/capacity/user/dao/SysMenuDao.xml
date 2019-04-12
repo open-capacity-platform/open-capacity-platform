@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.open.capacity.user.dao.SysMenuDao">
+
+	<update id="updateByOps">
+		update sys_menu
+		<set>
+			<if test="parentId != null">
+				parentId = #{parentId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null and url != ''">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="path != null and path != ''">
+				path = #{path,jdbcType=VARCHAR},
+			</if>
+			<if test="css != null">
+				css = #{css,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				sort = #{sort,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isMenu != null">
+				isMenu = #{isMenu,jdbcType=INTEGER},
+			</if>
+			<if test="hidden != null">
+				hidden = #{hidden,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

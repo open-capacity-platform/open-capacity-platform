@@ -1,0 +1,114 @@
+druid使用说明
+
+spring:
+  redis:
+################### redis 单机版 start ########################## 
+    host: 127.0.0.1
+    port: 6379    
+    database: 1
+################## mysql start ############################    
+  datasource:
+    druid: 
+      # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
+      url: jdbc:mysql://127.0.0.1:3306/boot_security?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: root
+      driver-class-name:  com.mysql.jdbc.Driver
+      #连接池配置(通常来说，只需要修改initialSize、minIdle、maxActive
+      initial-size: 1
+      max-active: 20
+      min-idle: 1
+      # 配置获取连接等待超时的时间
+      max-wait: 60000
+      #打开PSCache，并且指定每个连接上PSCache的大小
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      validation-query: SELECT 'x'
+      test-on-borrow: false
+      test-on-return: false 
+      test-while-idle: true      
+      #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      #配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      filters: stat
+      # WebStatFilter配置，说明请参考Druid Wiki，配置_配置WebStatFilter
+      #是否启用StatFilter默认值true
+      web-stat-filter.enabled: true
+      web-stat-filter.url-pattern:  /*
+      web-stat-filter.exclusions: "*.js , *.gif ,*.jpg ,*.png ,*.css ,*.ico , /druid/*"
+      web-stat-filter.session-stat-max-count: 1000
+      web-stat-filter.profile-enable: true
+      # StatViewServlet配置
+      #展示Druid的统计信息,StatViewServlet的用途包括：1.提供监控信息展示的html页面2.提供监控信息的JSON API
+      #是否启用StatViewServlet默认值true
+      stat-view-servlet.enabled: true
+      #根据配置中的url-pattern来访问内置监控页面，如果是上面的配置，内置监控页面的首页是/druid/index.html例如：
+      #http://110.76.43.235:9000/druid/index.html
+      #http://110.76.43.235:8080/mini-web/druid/index.html
+      stat-view-servlet.url-pattern:  /druid/*
+      #允许清空统计数据
+      stat-view-servlet.reset-enable:  true
+      stat-view-servlet.login-username: admin
+      stat-view-servlet.login-password: admin
+      #StatViewSerlvet展示出来的监控信息比较敏感，是系统运行的内部情况，如果你需要做访问控制，可以配置allow和deny这两个参数
+      #deny优先于allow，如果在deny列表中，就算在allow列表中，也会被拒绝。如果allow没有配置或者为空，则允许所有访问
+      #配置的格式
+      #<IP>
+      #或者<IP>/<SUB_NET_MASK_size>其中128.242.127.1/24
+      #24表示，前面24位是子网掩码，比对的时候，前面24位相同就匹配,不支持IPV6。
+      #stat-view-servlet.allow=
+      #stat-view-servlet.deny=128.242.127.1/24,128.242.128.1
+      # Spring监控配置，说明请参考Druid Github Wiki，配置_Druid和Spring关联监控配置
+      #aop-patterns= # Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
+ 
+logging:
+  level:
+    root: INFO
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+    com.open.capacity: DEBUG 
+
+
+
+redis使用说明
+ConfigurableApplicationContext context =  SpringApplication.run(UserCenterApp.class, args);
+
+RedisTemplate redisTemplate = context.getBean(RedisTemplate.class) ;
+
+
+方式1：	
+	redisTemplate.opsForValue().set("33", "hello");
+	
+方式2:	
+
+		
+		RedisTemplate redisTemplate = context.getBean(RedisTemplate.class) ;
+		final byte[][] EMPTY_ARGS = new byte[0][];
+		
+		
+		redisTemplate.execute(new RedisCallback<Long>() {
+
+			@Override
+			public Long doInRedis(RedisConnection connection) throws DataAccessException {
+				
+				//redis info
+				connection.info();
+				
+				System.out.println("11111"+connection.info());
+				
+				//已使用的keysize
+				Object obj = connection.execute("DBSIZE", EMPTY_ARGS);
+				
+				System.out.println("DBSIZE"+obj);
+				
+				//总内存能获取，
+				System.out.println("memory"+connection.info("memory").get("used_memory"));;
+				
+				return 1L;
+			}
+		});
+		context.close();
+
+	

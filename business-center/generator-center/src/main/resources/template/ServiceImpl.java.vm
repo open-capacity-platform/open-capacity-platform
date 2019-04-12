@@ -1,0 +1,66 @@
+package ${package}.${moduleName}.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.open.capacity.model.common.PageResult;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.collections4.MapUtils;
+
+import ${package}.${moduleName}.entity.${className};
+import ${package}.${moduleName}.dao.${className}Dao;
+import ${package}.${moduleName}.service.${className}Service;
+
+
+@Service
+public class ${className}ServiceImpl  implements ${className}Service {
+
+    @Autowired
+    private ${className}Dao ${classname}Dao;
+
+    /**
+     * 添加
+     * @param ${classname}
+     */
+    public int save(${className} ${classname}){
+        return ${classname}Dao.save(${classname});
+    }
+
+    /**
+     * 修改
+     * @param ${classname}
+     */
+    public int update(${className} ${classname}){
+        return ${classname}Dao.update(${classname});
+    }
+
+
+    /**
+     * 删除
+     * @param id
+     */
+    public int delete(Long id){
+        return ${classname}Dao.delete(id);
+    }
+
+
+    /**
+     * 列表
+     * @param params
+     * @return
+     */
+    public PageResult<${className}> findAll(Map<String, Object> params){
+        //设置分页信息，分别是当前页数和每页显示的总记录数【记住：必须在mapper接口中的方法执行之前设置该分页信息】
+        if (MapUtils.getInteger(params, "page")!=null && MapUtils.getInteger(params, "limit")!=null)
+            PageHelper.startPage(MapUtils.getInteger(params, "page"),MapUtils.getInteger(params, "limit"),true);
+
+        List<${className}> list  =  ${classname}Dao.findAll(params);
+        PageInfo<${className}> pageInfo = new PageInfo(list);
+
+        return PageResult.<${className}>builder().data(pageInfo.getList()).code(0).count(pageInfo.getTotal()).build();
+    }
+
+}

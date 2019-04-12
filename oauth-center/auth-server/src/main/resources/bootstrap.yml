@@ -1,0 +1,23 @@
+#端口
+server:
+  port: 8000
+#  port: ${randomServerPort.value[8000,8000]}    #随机端口
+
+#服务名称
+spring:
+  application:
+    name: auth-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr:  127.0.0.1:8848    
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always   
+

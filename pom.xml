@@ -1,0 +1,283 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.open.capacity</groupId>
+	<artifactId>open-capacity-platform</artifactId>
+	<version>1.0.1</version>
+	<packaging>pom</packaging>
+
+	<!-- ~ ~ Copyright (c) 2018-2025, open-capacity-platform All rights reserved. 
+		~ ~ Redistribution and use in source and binary forms, with or without ~ 
+		modification, are permitted provided that the following conditions are met: 
+		~ ~ Redistributions of source code must retain the above copyright notice, 
+		~ this list of conditions and the following disclaimer. ~ Redistributions 
+		in binary form must reproduce the above copyright ~ notice, this list of 
+		conditions and the following disclaimer in the ~ documentation and/or other 
+		materials provided with the distribution. ~ Neither the name of the open-capacity-platform 
+		developer nor the names of its ~ contributors may be used to endorse or promote 
+		products derived from ~ this software without specific prior written permission. 
+		~ Author: owen gitgeek (624191343@qq.com) ~ -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<log4j2.version>2.1</log4j2.version>
+		<java.version>1.8</java.version>
+		<sharding-jdbc>2.0.3</sharding-jdbc>
+		<hutool.version>4.1.13</hutool.version>
+		<kaptcha.version>0.0.9</kaptcha.version>
+		<swagger.version>2.9.2</swagger.version>
+		<core.version>1.0.1</core.version>
+		<disruptor.version>3.4.1</disruptor.version>
+		<swagger.m.version>1.0.6</swagger.m.version>
+		<docker.image.prefix>owenwangwen</docker.image.prefix>
+		<docker.host>http://59.110.164.254:5555</docker.host>
+		<net-devh-grpc.version>2.0.1.RELEASE</net-devh-grpc.version>
+		<spring-platform.version>Cairo-SR3</spring-platform.version>
+		<spring-security.version>5.1.1.RELEASE</spring-security.version>
+		<security-oauth2.version>2.3.4.RELEASE</security-oauth2.version>
+		<hibernate-validator.verion>5.0.2.Final</hibernate-validator.verion>
+		<commons-collections4.version>4.1</commons-collections4.version>
+		<fastjson.version>1.2.47</fastjson.version>
+		<jasypt.version>1.14</jasypt.version>
+		<txlcn.version>5.0.2.RELEASE</txlcn.version>
+		<spring-boot.version>2.0.4.RELEASE</spring-boot.version>
+		<spring-cloud-dependencies.version>Finchley.SR2</spring-cloud-dependencies.version>
+		<spring-cloud-alibaba-dependencies.version>0.2.1.RELEASE</spring-cloud-alibaba-dependencies.version>
+	</properties>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commons-collections4.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- Micrometer Prometheus registry -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.spring.platform</groupId>
+				<artifactId>platform-bom</artifactId>
+				<version>${spring-platform.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud-dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			 <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth</groupId>
+				<artifactId>spring-security-oauth2</artifactId>
+				<version>${security-oauth2.version}</version>
+			</dependency>
+			<dependency>
+                <groupId>com.codingapi.txlcn</groupId>
+                <artifactId>txlcn-tm</artifactId>
+                <version>${txlcn.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codingapi.txlcn</groupId>
+                <artifactId>txlcn-tc</artifactId>
+                <version>${txlcn.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.codingapi.txlcn</groupId>
+                <artifactId>txlcn-txmsg-netty</artifactId>
+                <version>${txlcn.version}</version>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<target>${java.version}</target>
+						<source>${java.version}</source>
+						<encoding>UTF-8</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<configuration>
+						<archive>
+							<addMavenDescriptor>false</addMavenDescriptor>
+						</archive>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.yml</include>
+					<include>**/*.xml</include>
+					<include>**/*.tld</include>
+					<include>**/*.p12</include>
+					<include>**/*.conf</include>
+					<include>**/*.txt</include>
+					<include>**/*.wsdl</include>
+					<include>**/*.xsd</include>
+					<include>**/*.ftl</include>
+					<include>processes/*</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/*.xml</include>
+					<include>**/*.tld</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/view</directory>
+				<includes>
+					<include>**/*.*</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+
+			<resource>
+				<directory>src/main/proto</directory>
+				<includes>
+					<include>**/*.proto</include>
+				</includes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+	</build>
+
+
+	<modules>
+		<!-- 内部支撑工具 -->
+		<module>inner-intergration</module>
+		<!-- 注册中心 -->
+		<module>register-center</module>
+		<!-- 认证中心 -->
+		<module>oauth-center</module>
+		<!-- 业务网关 -->
+		<module>api-gateway</module>
+		<!-- 业务中心 -->
+		<module>business-center</module>
+		<!-- 任务中心 -->
+		<module>job-center</module>
+		<!-- 灰度发布中心 <module>gray-center</module> -->
+		<!-- 调优中心 <module>tuning-center</module> -->
+		<!-- 监控中心 -->
+		<module>monitor-center</module>
+		<!-- spring cloud gateway -->
+		<module>new-api-gateway</module>
+		 
+	</modules>
+	<developers>
+
+		<developer>
+			<id>01</id>
+			<name>gitgeek</name>
+			<email>986969368@qq.com</email>
+		</developer>
+		<developer>
+			<id>02</id>
+			<name>someday</name>
+			<email>842695235@qq.com</email>
+		</developer>
+		<developer>
+			<id>03</id>
+			<name>caoheyang911016</name>
+			<email>328690901@qq.com</email>
+		</developer>
+		<developer>
+			<id>04</id>
+			<name>Binary</name>
+			<email>154232101@qq.com</email>
+		</developer>
+		<developer>
+			<id>05</id>
+			<name>financeyuan</name>
+			<email>2478412512@qq.com</email>
+		</developer>
+		<developer>
+			<id>06</id>
+			<name>1758783856</name>
+			<email>1758783856@qq.com</email>
+		</developer>
+		<developer>
+			<id>07</id>
+			<name>68335397</name>
+			<email>68335397@qq.com</email>
+		</developer>
+		<developer>
+			<id>08</id>
+			<name>415213294</name>
+			<email>415213294@qq.com</email>
+		</developer>
+		<developer>
+			<id>09</id>
+			<name>573059382</name>
+			<email>573059382@qq.com</email>
+		</developer>
+		<developer>
+			<id>10</id>
+			<name>dawei</name>
+			<email>phone:15098899951 area:jinan email:64738479@qq.com</email>
+		</developer>
+	</developers>
+</project>

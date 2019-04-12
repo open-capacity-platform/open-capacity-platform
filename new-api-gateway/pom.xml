@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.open.capacity</groupId>
+		<artifactId>open-capacity-platform</artifactId>
+		<version>1.0.1</version>
+	</parent>
+	<artifactId>new-api-gateway</artifactId>
+
+	<dependencies>
+	
+	
+		<!-- 日志统一配置 -->
+		<dependency>
+			<groupId>com.open.capacity</groupId>
+			<artifactId>log-core</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+		
+		<!-- 关系型和非关系型数据库配置 -->
+		<dependency>
+			<groupId>com.open.capacity</groupId>
+			<artifactId>db-core</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+		<!-- 公共实体类模块 -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+		</dependency>
+
+		<!-- swagger -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+
+		 
+
+		<!-- 选用nacos时打开 -->
+		<dependency>
+			 <groupId>org.springframework.cloud</groupId> 
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId> 
+		</dependency> 
+	</dependencies>
+</project>

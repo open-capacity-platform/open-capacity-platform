@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.open.capacity</groupId>
+    <artifactId>inner-intergration</artifactId>
+    <version>1.0.1</version>
+  </parent>
+  <artifactId>grpc-lib</artifactId>
+  
+   <properties>
+        <os.plugin.version>1.6.0</os.plugin.version>
+        <grpc.version>1.15.1</grpc.version>
+        <protoc.version>3.6.1</protoc.version>
+        <protobuf.plugin.version>0.6.1</protobuf.plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-all</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+    </dependencies>
+
+    
+</project>

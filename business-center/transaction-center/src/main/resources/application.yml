@@ -1,0 +1,93 @@
+spring:
+  datasource:  
+    druid: 
+      # JDBC 配置(驱动类自动从url的mysql识别,数据源类型自动识别)
+      url: jdbc:mysql://59.110.164.254:3306/tx-manager?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: root
+      driver-class-name:  com.mysql.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update    
+################### mysq end ##########################
+  redis:
+################### redis 单机版 start ########################## 
+    host: 59.110.164.254
+    port: 6379    
+    timeout: 6000
+    database: 1
+    lettuce:
+      pool:
+        max-active: 10 # 连接池最大连接数（使用负值表示没有限制）,如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)
+        max-idle: 8   # 连接池中的最大空闲连接 ，默认值也是8
+        max-wait: 100 # # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException  
+        min-idle: 2    # 连接池中的最小空闲连接 ，默认值也是0
+      shutdown-timeout: 100ms
+################### redis 单机版 end ##########################   
+#    cluster:
+#      nodes: 130.75.131.237:7000,130.75.131.238:7000,130.75.131.239:7000,130.75.131.237:7001,130.75.131.238:7001,130.75.131.239:7001
+#        #130.75.131.237:7000,130.75.131.238:7000,130.75.131.239:7000,130.75.131.237:7001,130.75.131.238:7001,130.75.131.239:7001
+#        #192.168.3.157:7000,192.168.3.158:7000,192.168.3.159:7000,192.168.3.157:7001,192.168.3.158:7001,192.168.3.159:7001
+#    timeout: 1000 # 连接超时时间（毫秒）
+#    lettuce:
+#      pool:
+#        max-active: 10 # 连接池最大连接数（使用负值表示没有限制）,如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)
+#        max-idle: 8   # 连接池中的最大空闲连接 ，默认值也是8
+#        max-wait: 100 # # 等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException  
+#        min-idle: 2    # 连接池中的最小空闲连接 ，默认值也是0
+#      shutdown-timeout: 100ms    
+#  zipkin:
+
+tx-lcn:
+  logger:
+    enabled: true
+    driver-class-name: com.mysql.jdbc.Driver
+    jdbc-url: jdbc:mysql://59.110.164.254:3306/tx_logger?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false 
+    username: root
+    password: root
+  manager:
+    admin-key: admin      # TM后台登陆密码，默认值为codingapi
+    dtx-time: 150000      # 分布式事务执行总时间(ms). 默认为8000
+#设置最大超时时间
+ribbon:  
+  ServerListRefreshInterval: 10  #刷新服务列表源的间隔时间
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true  
+  ReadTimeout: 90000  
+  ConnectTimeout: 90000 
+  OkToRetryOnAllOperations: true
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+
+
+#设置最大容错超时时间
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 90000
+
+
+logging:
+  level:
+    com.open.capacity: INFO 
+    org.hibernate: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql.BasicExtractor: TRACE
+#    com.neusoft: DEBUG     
+#    com.netflix: DEBUG                    #用于心跳检测输出的日志    
+
+
+  
+ 
+
+
+ 
+

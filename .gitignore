@@ -1,0 +1,40 @@
+# maven ignore
+target/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+*.class
+*.project
+*.factorypath
+
+# eclipse ignore
+.settings/
+.classpath
+target/
+bin/
+NewCustServSer/
+SrenewSer/
+sms-drugstore/
+04.sms-center.sql
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+
+# temp ignore
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# system ignore
+.DS_Store
+Thumbs.db
+
+# else
+.springBeans

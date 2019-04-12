@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:flowable="http://flowable.org/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="Interface" name="ExpenseProcess" isExecutable="true">
+    <documentation>申请流程</documentation>
+    <startEvent id="start" name="开始"></startEvent>
+    <userTask id="fillTask" name="接口申请" xmlns:flowable="http://flowable.org/bpmn" flowable:assignee="${taskUser}">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler">false</modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="directorTak" name="管理员审批" >
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.open.capacity.handler.AdminTaskHandler"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <endEvent id="end" name="结束"></endEvent>
+    <sequenceFlow id="directorNotPassFlow" name="驳回" sourceRef="directorTak" targetRef="fillTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approve=='驳回'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="fillTask"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="fillTask" targetRef="directorTak"></sequenceFlow>
+    <sequenceFlow id="directorPassFlow" name="通过" sourceRef="directorTak" targetRef="end">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approve=='通过'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Expense">
+    <bpmndi:BPMNPlane bpmnElement="Expense" id="BPMNPlane_Expense">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="35.0" width="35.0" x="50.0" y="187.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="fillTask" id="BPMNShape_fillTask">
+        <omgdc:Bounds height="80.0" width="100.0" x="310.0" y="165.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="directorTak" id="BPMNShape_directorTak">
+        <omgdc:Bounds height="80.0" width="100.0" x="780.0" y="166.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="35.0" width="35.0" x="820.0" y="420.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="directorNotPassFlow" id="BPMNEdge_directorNotPassFlow">
+        <omgdi:waypoint x="830.0" y="166.0"></omgdi:waypoint>
+        <omgdi:waypoint x="824.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="359.0" y="37.0"></omgdi:waypoint>
+        <omgdi:waypoint x="360.0" y="165.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="16.0" width="100.0" x="830.0" y="166.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="85.0" y="204.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="205.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="410.0" y="205.0"></omgdi:waypoint>
+        <omgdi:waypoint x="780.0" y="206.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="directorPassFlow" id="BPMNEdge_directorPassFlow">
+        <omgdi:waypoint x="830.0" y="246.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="420.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="16.0" width="100.0" x="830.0" y="246.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

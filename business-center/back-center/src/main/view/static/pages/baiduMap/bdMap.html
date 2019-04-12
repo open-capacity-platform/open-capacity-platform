@@ -1,0 +1,96 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">百度地图</h2>
+        <span class="layui-breadcrumb pull-right">
+          <a href="#!home_console">首页</a>
+          <a><cite>百度地图</cite></a>
+        </span>
+    </div>
+    <div class="layui-body" style="left:0px;height: 90%" id="allmap"  ></div>
+</div>
+
+
+<style type="text/css">
+    /*隐藏左下角百度logo*/
+    .BMap_cpyCtrl {
+        display: none;
+    }
+/*    .anchorBL {
+        display: none;
+    }*/
+    /*隐藏左下角百度logo,隐藏导致定位图标丢失*/
+
+</style>
+
+<script>
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,12);
+    // 添加带有定位的导航控件
+    var navigationControl = new BMap.NavigationControl({
+        // 靠左上角位置
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        // LARGE类型
+        type: BMAP_NAVIGATION_CONTROL_LARGE,
+        // 启用显示定位
+        //enableGeolocation: true
+    });
+    map.addControl(navigationControl);
+
+    var geolocationControl = new BMap.GeolocationControl();
+    geolocationControl.addEventListener("locationSuccess", function(e){
+        // 定位成功事件
+        var address = '';
+        address += e.addressComponent.province;
+        address += e.addressComponent.city;
+        address += e.addressComponent.district;
+        address += e.addressComponent.street;
+        address += e.addressComponent.streetNumber;
+        //创建检索信息窗口对象
+        var searchInfoWindow = null;
+        searchInfoWindow = new BMapLib.SearchInfoWindow(map, null, {
+            title  : address,      //标题
+            panel  : "panel",         //检索结果面板
+            enableAutoPan : true,     //自动平移
+            searchTypes   :[
+                BMAPLIB_TAB_SEARCH,   //周边检索
+                BMAPLIB_TAB_TO_HERE,  //到这里去
+                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        });
+        var marker = new BMap.Marker(e.point); //创建marker对象
+        marker.enableDragging(); //marker可拖拽
+        marker.addEventListener("click", function(e){
+            searchInfoWindow.open(marker);
+        })
+        map.addOverlay(marker); //在地图中添加marker
+
+    });
+    geolocationControl.addEventListener("locationError",function(e){
+        // 定位失败事件
+        alert("定位失败");
+    });
+    map.addControl(geolocationControl);
+
+
+
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            map.panTo(r.point);
+            map.enableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+            map.enableContinuousZoom();    //启用地图惯性拖拽，默认禁用
+/*            var ctrl = new BMapLib.TrafficControl({//是否显示路况提示面板
+                showPanel: false
+            });
+            ctrl.setAnchor(BMAP_ANCHOR_TOP_RIGHT);//按扭位置
+            map.addControl(ctrl);*/
+            map.enableScrollWheelZoom(true);
+        }
+        else {
+            alert('定位失败');
+        }
+    },{enableHighAccuracy: true})
+
+</script>

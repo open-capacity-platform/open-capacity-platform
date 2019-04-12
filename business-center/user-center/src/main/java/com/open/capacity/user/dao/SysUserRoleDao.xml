@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.open.capacity.user.dao.SysUserRoleDao">
+
+	<delete id="deleteUserRole">
+		delete from sys_role_user
+		<where>
+			<if test="userId != null">
+				and userId = #{userId}
+			</if>
+			<if test="roleId != null">
+				and roleId = #{roleId}
+			</if>
+		</where>
+	</delete>
+</mapper>

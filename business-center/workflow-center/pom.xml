@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.open.capacity</groupId>
+		<artifactId>business-center</artifactId>
+		<version>1.0.1</version>
+	</parent>
+	<artifactId>workflow-center</artifactId>
+
+
+	<dependencies>
+
+		<!-- 关系型和非关系型数据库配置 -->
+		<dependency>
+			<groupId>com.open.capacity</groupId>
+			<artifactId>db-core</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+		<!-- 日志统一配置 -->
+		<dependency>
+			<groupId>com.open.capacity</groupId>
+			<artifactId>log-core</artifactId>
+			<version>${core.version}</version>
+		</dependency>
+
+		<!--flowable工作流依赖 -->
+		<dependency>
+			<groupId>org.flowable</groupId>
+			<artifactId>flowable-spring-boot-starter</artifactId>
+			<version>6.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+	</dependencies>
+
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

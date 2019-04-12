@@ -1,0 +1,20 @@
+#端口配置
+server:
+   port: 7970 #随机端口
+#服务名称   
+spring:
+  application:
+    name: tx-manager
+  cloud:
+    nacos:
+      discovery:
+        server-addr:  127.0.0.1:8848  
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

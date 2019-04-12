@@ -1,0 +1,93 @@
+<div class="layui-card">
+    <div class="layui-card-header">
+        <h2 class="header-title">短信中心</h2>
+        <span class="layui-breadcrumb pull-right">
+          <a href="#!home_console">首页</a>
+          <a><cite>文件中心</cite></a>
+        </span>
+    </div>
+    <div class="layui-card-body">
+        <div class="layui-form toolbar">
+            搜索：<input id="sms-edit-search" class="layui-input search-input" type="text" placeholder="输入关键字"/>&emsp;
+            <button id="sms-btn-search" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索</button>
+        </div>
+
+        <!-- 数据表格 -->
+        <table class="layui-table" id="sms-table" lay-filter="sms-table"></table>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="sms-table-bar">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+
+<script>
+
+    layui.use(['form', 'table', 'util', 'config', 'admin'],function () {
+        var form = layui.form;
+        var table = layui.table;
+        var config = layui.config;
+        var layer = layui.layer;
+        var util = layui.util;
+        var admin = layui.admin;
+
+
+        // 渲染表格
+        table.render({
+            elem: '#sms-table',
+            // url: config.base_server + 'user_query.json',
+            url: config.base_server + 'api-sms/sms',
+            method: 'GET',
+            where: {
+                access_token: config.getToken().access_token
+            },
+            page: true,
+            cols: [[
+                {type: 'numbers'},
+                {field: 'id', sort: true, title: '编号'},
+                {field: 'phone', sort: true, title: '手机号码'},
+                {field: 'message', sort: true, title: '信息'},
+                {
+                    sort: true, templet: function (d) {
+                        return util.toDateString(d.day);
+                    }, title: '日期'
+                },
+                {field: 'source', sort: true, title: 'OSS运营商'},
+                {
+                    sort: true, templet: function (d) {
+                        return util.toDateString(d.createTime);
+                    }, title: '创建时间'
+                },
+                {
+                    sort: true, templet: function (d) {
+                        return util.toDateString(d.updateTime);
+                    }, title: '修改时间'
+                } 
+            ]]
+        });
+
+        // 工具条点击事件
+        table.on('tool(sms-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'del') { // 删除
+                doDelete(obj);
+            }
+        });
+
+
+        
+
+        // 搜索按钮点击事件
+        $('#sms-btn-search').click(function () {
+            var key = $('#sms-edit-search').val();
+            table.reload('sms-table', {where: {searchKey: key}});
+        });
+    });
+
+
+</script>

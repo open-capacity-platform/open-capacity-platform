@@ -1,0 +1,77 @@
+package ${package}.${moduleName}.controller;
+
+import java.util.Map;
+
+import com.open.capacity.model.common.Result;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import ${package}.${moduleName}.entity.${className};
+import ${package}.${moduleName}.service.${className}Service;
+
+import com.open.capacity.model.common.PageResult;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("${pathName}")
+@Api(tags = "${comments}")
+public class ${className}Controller {
+
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @RequestMapping("/list")
+    @PreAuthorize("hasAnyAuthority('${moduleName}:${pathName}:list')")
+    public PageResult list(@RequestParam Map<String, Object> params){
+        PageResult pageResult = ${classname}Service.findAll(params);
+        return pageResult;
+    }
+
+
+    /**
+     * 保存
+     */
+    @RequestMapping("/save")
+    @PreAuthorize("hasAnyAuthority('generator:sysroleuser:save')")
+    public Result save(@RequestBody ${className} ${classname}){
+			${classname}Service.save(${classname});
+
+        return Result.succeed("");
+    }
+
+    /**
+     * 修改
+     */
+    @RequestMapping("/update")
+    @PreAuthorize("hasAnyAuthority('generator:sysroleuser:update')")
+    public Result update(@RequestBody ${className} ${classname}){
+			${classname}Service.update(${classname});
+
+        return Result.succeed("");
+    }
+
+    /**
+     * 删除
+     */
+    @RequestMapping("/delete")
+    @PreAuthorize("hasAnyAuthority('generator:sysroleuser:delete')")
+    public Result delete(@RequestBody Long ${pk.attrname}){
+			${classname}Service.delete(${pk.attrname});
+        return Result.succeed("");
+    }
+
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.open.capacity.user.dao.SysRoleDao">
+
+	<sql id="where">
+		<where>
+			<if test="name != null and name != ''">
+				and t.name like concat('%', #{name}, '%')
+			</if>
+
+			<if test="searchKey != null and searchKey != '' and searchKey=='name'">
+				and t.name  like concat('%', #{searchValue}, '%')
+			</if>
+
+		</where>
+	</sql>
+	<select id="count" resultType="int">
+		select count(*) from sys_role t
+		<include refid="where" />
+	</select>
+
+	<select id="findList" resultType="com.open.capacity.model.system.SysRole">
+		select * from sys_role t
+		<include refid="where" />
+		order by t.id desc
+		<!--<if test="page != null and page >= 0 and limit != null and limit > 0">-->
+			<!--limit #{page},#{limit}-->
+		<!--</if>-->
+
+	</select>
+</mapper>

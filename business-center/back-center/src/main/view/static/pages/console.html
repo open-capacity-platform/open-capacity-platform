@@ -1,0 +1,380 @@
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-lg6 layui-col-md6">
+        <div class="layui-card">
+        <div class="card-header">
+        </div>
+        <div class="card-block">
+            <div id="container" style="height:300px"></div>
+        </div>
+    </div>
+    </div>
+    <div class="layui-col-lg6 layui-col-md6">
+        <div class="layui-card">
+            <div class="card-header">
+                <h2 class="card-title"></h2>
+            </div>
+            <div class="card-block">
+                <div id="keysChart" style="height:300px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-lg8 layui-col-md7">
+        <div class="layui-card">
+            <div class="layui-card-header">项目介绍</div>
+            <div class="layui-card-body">
+                基于Spring Cloud(Finchley.RELEASE) 、Spring Boot(2.0.1.RELEASE)、Spring Security jwt开发
+                集成layui前后分离的开发平台,其中包括Gateway网关、Oauth认证服务、User用户服务、
+                Eureka注册中心等多个服务, 为微服务开发所需配置管理、服务发现、断路器、智能路由、
+                微代理等,努力为企业级打造最全面的微服务开发解决方案;
+
+                <h5 cid="n13" mdtype="heading" class="md-end-block md-heading md-focus" style="padding: 10px"><span md-inline="plain" class=""></span></h5>
+                <table class="layui-table">
+                    <thead>
+                    <tr class="md-end-block" cid="n17" mdtype="table_row">
+                        <th><span contenteditable="true" class="td-span" cid="n18" mdtype="table_cell"><span md-inline="plain">名称</span></span></th>
+                        <th><span contenteditable="true" class="td-span" cid="n19" mdtype="table_cell"><span md-inline="plain">项目名称</span></span></th>
+                        <th><span contenteditable="true" class="td-span" cid="n20" mdtype="table_cell"><span md-inline="plain">说明</span></span></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="md-end-block" cid="n57" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n58" mdtype="table_cell"><span md-inline="plain">脚本模块</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n59" mdtype="table_cell"><span md-inline="plain">sql</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n60" mdtype="table_cell"><span md-inline="plain">存放sql脚本</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n37" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n38" mdtype="table_cell"><span md-inline="plain">数据封装</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n39" mdtype="table_cell"><span md-inline="plain">db-core</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n40" mdtype="table_cell"><span md-inline="plain">数据库逻辑封装</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n21" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n22" mdtype="table_cell"><span md-inline="plain">API工具包</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n23" mdtype="table_cell"><span md-inline="plain">api-commons</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n24" mdtype="table_cell"><span md-inline="plain">存放Model层，和部分工具类</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n53" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n54" mdtype="table_cell"><span md-inline="plain">注册中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n55" mdtype="table_cell"><span md-inline="plain">register-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n56" mdtype="table_cell"><span md-inline="plain">采用Euraka构建服务注册中心，负责服务注册于发现</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n49" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n50" mdtype="table_cell"><span md-inline="plain">认证中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n51" mdtype="table_cell"><span md-inline="plain">oauth-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n52" mdtype="table_cell"><span md-inline="plain">基于SpringSecurity进行安全认证，采用OAuth2.0认证体系，对客户端、用户进行认证及授权，支持多种模式；</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n29" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n30" mdtype="table_cell"><span md-inline="plain">业务中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n31" mdtype="table_cell"><span md-inline="plain">business-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n32" mdtype="table_cell"><span md-inline="plain">主要包括前端项目，用户中心，文件中心等服务</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n33" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n34" mdtype="table_cell"><span md-inline="plain">配置中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n35" mdtype="table_cell"><span md-inline="plain">config-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n36" mdtype="table_cell"><span md-inline="plain">配置中心，管理整个微服务的配置;</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n25" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n26" mdtype="table_cell"><span md-inline="plain">Cloud网关</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n27" mdtype="table_cell"><span md-inline="plain">api-gateway</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n28" mdtype="table_cell"><span md-inline="plain">基于Spring Cloud构建gateway网关服务，采用OAuth2.0认证体系，管理所有服务的负载，可以集群部署；</span></span></td>
+                    </tr>
+
+
+                    <tr class="md-end-block" cid="n41" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n42" mdtype="table_cell"><span md-inline="plain">任务中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n43" mdtype="table_cell"><span md-inline="plain">job-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n44" mdtype="table_cell"><span md-inline="plain">基于xxl-job实现的Demo，可以直接使用</span></span></td>
+                    </tr>
+                    <tr class="md-end-block" cid="n45" mdtype="table_row">
+                        <td><span contenteditable="true" class="td-span" cid="n46" mdtype="table_cell"><span md-inline="plain">监控中心</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n47" mdtype="table_cell"><span md-inline="plain">monitor-center</span></span></td>
+                        <td><span contenteditable="true" class="td-span" cid="n48" mdtype="table_cell"><span md-inline="plain">基于Spring Boot Admin，对应用状态进行监控，对服务调用进行追踪和对熔断进行监测;集成zipkin链式追踪服务</span></span></td>
+                    </tr>
+
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-lg4 layui-col-md5">
+        <div class="layui-card">
+            <div class="layui-card-header">后台框架</div>
+            <div class="layui-card-body">
+                <table class="layui-table layui-text">
+                    <colgroup>
+                        <col width="100">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td>核心框架</td>
+                        <td>Spring Cloud、Spring Boot</td>
+                    </tr>
+                    <tr>
+                        <td>持久层</td>
+                        <td>MyBatis、Druid</td>
+                    </tr>
+                    <tr>
+                        <td>权限框架</td>
+                        <td>Spring Security、OAuth2.0</td>
+                    </tr>
+                    <tr>
+                        <td>SwaggerApi文档</td>
+                        <td><a href="https://gitee.com/zyplayer/swagger-mg-ui" target="_blank">swagger-mg-ui(推荐)</a>   &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="https://gitee.com/xiaoym/swagger-bootstrap-ui" target="_blank">swagger-bootstrap-ui</a> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>任务调度平台</td>
+                        <td><a href="https://gitee.com/xuxueli0323/xxl-job" target="_blank">xxl-job</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-card">
+            <div class="layui-card-header">前端框架</div>
+            <div class="layui-card-body">
+                <table class="layui-table layui-text">
+                    <colgroup>
+                        <col width="100">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <td>核心框架</td>
+                        <td><a href="http://www.layui.com/" target="_blank">layui-v2.3.0</a></td>
+                    </tr>
+                    <tr>
+                        <td>路由框架</td>
+                        <td><a href="https://github.com/itorr/q.js" target="_blank">q.js</a>（纯js轻量级路由框架）</td>
+                    </tr>
+                    <tr>
+                        <td>mvvm框架</td>
+                        <td><a href="https://gitee.com/pandarrr/pandyle" target="_blank">pandyle.js</a>（专为jquery编写的mvvm库）
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>EasyWebPage</td>
+                        <td><a href="https://gitee.com/whvse/EasyWebPage" target="_blank">基于jquery、layui的管理系统模板</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>主要特色</td>
+                        <td>单页面 / 响应式 / 简约 / 极易上手</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-card">
+            <div class="layui-card-header">友情链接</div>
+            <div class="layui-card-body">
+                <div class="layui-carousel admin-carousel admin-news">
+                    <div carousel-item>
+                        <div>
+                            <a href="http://www.layui.com/" target="_blank" class="layui-bg-green">layui - 经典模块化前端框架</a>
+                        </div>
+                        <div>
+                            <a href="http://www.layui.com/admin/" target="_blank" class="layui-bg-cyan">layuiAdmin -
+                                layui官方后台模板</a>
+                        </div>
+                        <div>
+                            <a href="http://fly.layui.com/case/2018/" target="_blank" class="layui-bg-blue">发现layui年度最佳案例</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<script>
+    layui.use(['carousel', 'element', 'admin'], function () {
+        var carousel = layui.carousel;
+        var element = layui.element;
+        var device = layui.device;
+        var admin = layui.admin;
+
+
+        layui.link('assets/css/console.css');
+        // 渲染轮播
+        carousel.render({
+            elem: '.layui-carousel',
+            width: '100%',
+            height: '60px',
+            arrow: 'none',
+            autoplay: true,
+            trigger: device.ios || device.android ? 'click' : 'hover',
+            anim: 'fade'
+        });
+
+
+
+        Highcharts.setOptions({
+            global: {
+                useUTC: false
+            }
+        });
+
+        $("#container").highcharts({
+            chart: {
+                type: "spline",
+                animation: Highcharts.svg,
+                marginRight: 0,
+                events: {
+                    load: function() {
+                        var series = this.series[0];
+                        //重绘页面
+                        rediskeysSizeInterval = setInterval(function() {
+
+                            admin.req('api-auth/redis/memoryInfo', {}, function (data) {
+                                var x = data.create_time, y = data.used_memory / 1024;
+                                series.addPoint([ x, y ], true, true);
+                            }, 'GET');
+
+                        }, 10e3);
+                    }
+                }
+            },
+            title: {
+                text: "Redis 内存实时占用情况",
+                style: {
+                    "font-size": "1.2rem"
+                }
+            },
+            xAxis: {
+                type: "datetime",
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: "kb"
+                },
+                plotLines: [ {
+                    value: 0,
+                    width: 1,
+                    color: "#808080"
+                } ]
+            },
+            plotOptions: {
+                spline: {
+                    color: '#2196F3'
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                formatter: function() {
+                    return "<b>" + this.series.name + "</b><br/>" + Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) + "<br/>" + Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [ {
+                name: "内存占用（kb）",
+                data: function() {
+                    var data = [], time = new Date().getTime(), i;
+                    for (i = -19; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 1e3,
+                            y: Math.random() * (1e3 - 800) + 800
+                        });
+                    }
+                    return data;
+                }()
+            } ]
+        });
+
+        $("#keysChart").highcharts({
+            chart: {
+                type: "spline",
+                animation: Highcharts.svg,
+                marginRight: 10,
+                events: {
+                    load: function() {
+                        var series = this.series[0];
+                        //定时重绘页面
+                        redisMemoryInfoInterval = setInterval(function() {
+                            admin.req('api-auth/redis/keysSize', {}, function (data) {
+                                var x = data.create_time, y = data.dbSize;
+                                series.addPoint([ x, y ], true, true);
+                            }, 'GET');
+
+                        }, 10e3);
+                    }
+                }
+            },
+            title: {
+                text: "Redis key的实时数量",
+                style: {
+                    "font-size": "1.2rem"
+                }
+            },
+            xAxis: {
+                type: "datetime",
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {
+                    text: ""
+                },
+                plotLines: [ {
+                    value: 0,
+                    width: 1,
+                    color: "#808080"
+                } ]
+            },
+            plotOptions: {
+                spline: {
+                    color: '#2196F3'
+                }
+            },
+            tooltip: {
+                formatter: function() {
+                    return "<b>" + this.series.name + "</b><br/>" + Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) + "<br/>" + Highcharts.numberFormat(this.y, 2);
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            legend: {
+                enabled: false
+            },
+            exporting: {
+                enabled: false
+            },
+            series: [ {
+                name: "keys",
+                data: function() {
+                    var data = [], time = new Date().getTime(), i;
+                    for (i = -19; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 1e3,
+                            y: 0
+                        });
+                    }
+                    return data;
+                }()
+            } ]
+        });
+
+    });
+</script>

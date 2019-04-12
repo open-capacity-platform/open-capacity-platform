@@ -1,0 +1,44 @@
+package ${package}.${moduleName}.service;
+
+import ${package}.${moduleName}.entity.${className};
+
+import com.open.capacity.model.common.PageResult;
+
+import java.util.Map;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+public interface ${className}Service {
+    /**
+     * 添加
+     * @param ${classname}
+     */
+    int save(${className} ${classname});
+
+    /**
+     * 修改
+     * @param ${classname}
+     */
+    int update(${className} ${classname});
+
+    /**
+     * 删除
+     * @param id
+     */
+    int delete(Long id);
+
+
+    /**
+     * 列表
+     * @param params
+     * @return
+     */
+    PageResult<${className}> findAll(Map<String, Object> params);
+
+}
+

@@ -1,0 +1,99 @@
+<!-- 服务弹框 -->
+<form id="services-form" lay-filter="services-form" class="layui-form model-form">
+    <input name="id" type="hidden"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">服务名称</label>
+        <div class="layui-input-block">
+            <input name="name" placeholder="请输入服务名称" type="text" class="layui-input" maxlength="50"
+                   lay-verify="required" required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">服务路径</label>
+        <div class="layui-input-block">
+            <input name="path" placeholder="请输入服务路径" type="text" class="layui-input"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否为服务</label>
+        <div class="layui-input-block">
+            <input type="radio" name="isMenu" value="1" title="是" checked/>
+            <input type="radio" name="isMenu" value="2" title="否"/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序号</label>
+        <div class="layui-input-block">
+            <input name="sort" placeholder="请输入排序号" type="number" class="layui-input" lay-verify="required" required/>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">上级服务</label>
+        <div class="layui-input-block">
+            <select name="parentId" id="parentId">
+                <option value="-1">顶级服务</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item model-form-footer">
+        <button class="layui-btn layui-btn-primary" ew-event="closeDialog" type="button">取消</button>
+        <button class="layui-btn" lay-filter="services-form-submit" lay-submit>保存</button>
+    </div>
+</form>
+
+<script>
+    layui.use(['layer', 'admin', 'form'],function () {
+        var layer = layui.layer;
+        var admin = layui.admin;
+        var form = layui.form;
+
+        form.render('radio');
+
+        // 获取一级菜单
+        layer.load(2);
+        admin.req('api-auth/services/findOnes', {}, function (data) {
+            layer.closeAll('loading');
+            if (0 == data.code) {
+
+                $.each(data.data,function(index,item){
+                    $('#parentId').append(new Option(item.name,item.id));//往下拉菜单里添加元素
+                })
+
+                form.render();  //菜单渲染 把内容加载进去
+
+                // 回显user数据
+                var services = admin.getTempData('t_services');
+                console.log(services);
+                $('#services-form').attr('method', 'POST');
+                if (services) {
+                    form.val('services-form', services);
+                    $('#services-form').attr('method', 'POST');
+                }
+            } else {
+                layer.msg('获取一级菜单', {icon: 2, time: 500});
+            }
+        }, 'GET');
+
+        // 表单提交事件
+        form.on('submit(services-form-submit)', function (data) {
+            layer.load(2);
+            admin.req('api-auth/services/saveOrUpdate', JSON.stringify(data.field), function (data) {
+                layer.closeAll('loading');
+                if (data.resp_code == 0) {
+                    layer.msg(data.resp_msg, {icon: 1, time: 500});
+                    admin.finishPopupCenter();
+                } else {
+                    layer.msg(data.resp_msg, {icon: 2, time: 500});
+                }
+            }, $('#services-form').attr('method'));
+            return false;
+        });
+
+
+    });
+</script>

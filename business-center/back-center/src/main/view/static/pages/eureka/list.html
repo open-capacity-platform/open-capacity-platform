@@ -1,0 +1,207 @@
+<link rel="stylesheet" href="module/dtree/dtree.css"/>
+<link rel="stylesheet" href="module/dtree/font/dtreefont.css"/>
+<style>
+    /** dtree选中颜色重写 */
+    .dtree-theme-item-this {
+        background-color: #eeeeee !important;
+    }
+
+    #ltTree {
+        height: 535px;
+        overflow: auto;
+    }
+
+    @media screen and (max-width: 750px) {
+        #ltTree {
+            height: auto;
+        }
+    }
+</style>
+
+<!-- 关闭Tab时顶部标题 -->
+<div class="layui-body-header">
+    <span class="layui-body-header-title">服务实例</span>
+    <span class="layui-breadcrumb pull-right">
+        <a href="#/console/console1">首页</a>
+        <a><cite>服务实例</cite></a>
+    </span>
+</div>
+
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <!-- 左树 -->
+        <div class="layui-col-sm12 layui-col-md4 layui-col-lg3">
+            <div class="layui-card">
+                <div class="layui-card-body mini-bar" id="ltTree">
+
+                </div>
+            </div>
+        </div>
+        <!-- 右表 -->
+        <div class="layui-col-sm12 layui-col-md8 layui-col-lg9">
+            <div class="layui-card">
+                <div class="layui-card-body">
+
+
+                    <table class="layui-table" id="rtTable" lay-filter="rtTable"></table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="rtTableBar">
+    <input type="checkbox" lay-filter="eureka-tpl-state" value="{{d.app}}/{{d.instanceId}}" lay-skin="switch" lay-text="正常|锁定"
+           {{d.status=='UP'?'checked':''}}/>
+</script>
+
+<!-- js部分 -->
+<script>
+    layui.use(['layer', 'form', 'table', 'util', 'dtree', 'admin'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+        var util = layui.util;
+        var dtree = layui.dtree;
+        var admin = layui.admin;
+		var tableObj =   [ ]  ;
+		
+		 admin.req('api-eureka/eureka/apps', {}, function (data) {
+                for (var i = 0; i <  data.applications.application.length; i++) {
+                    var temp ={};
+                    temp.id = data.applications.application[i].name ; 
+                    temp.title = data.applications.application[i].name ;
+                    tableObj.push(temp);
+                }
+                // console.log(applications);
+ 
+            }, 'GET');
+		
+        // 搜索按钮点击事件
+        $('#btnRtSearch').click(function () {
+            var value = $('#edtSearch').val();
+            table.reload('rtTable', {where: {search: value}});
+        });
+
+        // 树形渲染
+        setTimeout(function () {
+            $('#ltTree').html('');
+            dtree.render({
+                elem: '#ltTree',
+                data: tableObj
+            });
+        }, 300);
+
+        // 树形点击事件
+        dtree.on('node("ltTree")', function (obj) {
+            var data = obj.param;
+            debugger ;
+			var renderTable = function () {
+            admin.req('api-eureka/eureka/apps/'+data.nodeId, {}, function (data) {
+                var applications = new Array();
+                for (var i = 0; i <  data.application.instance.length; i++) {
+                    var instance = data.application.instance[i] ;
+                   
+                     applications.push(instance);
+                }
+                // console.log(applications);
+
+                // // 渲染表格
+                table.render({
+                    elem: '#rtTable',
+                    data: applications,
+                    page: false,
+                    cols: [[
+                        {type: 'numbers'},
+                        {field: 'app', sort: true, title: '服务名称'},
+                        {field: 'ipAddr', sort: true, title: 'IP地址'},
+                        {field: 'homePageUrl', sort: true, title: '页面地址'},
+                        {
+                            field: 'status', align: 'center',templet: function (d) {
+                                if (d.status == 'UP'){
+                                    return '<span style="color: #01AAED;" >正常</span>';
+                                }else if(d.status == 'OUT_OF_SERVICE'){
+                                    return '<span style="color: #FF0000;">暂停</span>';
+                                }else if(d.status == 'DOWN'){
+                                    return '<span style="color: #FF0000;">DOWN</span>';
+                                }
+                            }, title: '状态'
+
+                        },
+                        {align: 'center', align: 'center', toolbar: '#rtTableBar', title: '操作', minWidth: 120} 
+                    ]]
+                });
+            }, 'GET');
+        };
+
+        renderTable();
+
+		 // 修改状态
+        form.on('switch(eureka-tpl-state)', function (obj) {
+            layer.load(2);
+            // console.log(obj.elem.value)
+            var status = obj.elem.checked ? 'UP' : 'OUT_OF_SERVICE';
+            // http://127.0.0.1:1111/eureka/apps/AUTH-GATEWAY/auth-gateway:192.168.31.162:9200/status?value=UP
+            		
+            if(status == 'OUT_OF_SERVICE'){
+	            admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status?value="+status, {}, function (data) {
+	                if (data.code == 200){
+	                    setTimeout(function (args) {
+	                        layer.closeAll('loading');
+	                        admin.events.refresh();
+	                    },3000);
+	                }
+	            }, 'PUT');
+            }else if(status == 'UP'){
+            	
+            	admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status", {}, function (data) {
+	                if (data.code == 200){
+	                	admin.req('api-eureka/eureka/apps/'+obj.elem.value+"/status?value="+status, {}, function (data) {
+	    	                if (data.code == 200){
+	    	                    setTimeout(function (args) {
+	    	                        layer.closeAll('loading');
+	    	                        admin.events.refresh();
+	    	                    },3000);
+	    	                }
+	    	            }, 'PUT');
+	                }
+	            }, 'DELETE');
+            	
+            	
+            	
+            	
+            }		
+        });
+        // 监听工具条
+        table.on('tool(rtTable)', function (obj) {
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值
+
+            if (layEvent === 'edit') { // 查看
+                layer.msg('点击了修改');
+            } else if (layEvent === 'del') { // 删除
+                layer.msg('点击了删除');
+            }
+        });
+
+        // 批量删除
+        $('#btnRtDel').click(function () {
+            var checkRows = table.checkStatus('rtTable');
+            if (checkRows.data.length == 0) {
+                layer.msg('请选择要删除的数据', {icon: 2});
+            } else {
+                layer.msg('你选择了' + checkRows.data.length + '条数据', {icon: 1});
+            }
+        });
+			   
+
+
+        });
+
+    });
+</script>

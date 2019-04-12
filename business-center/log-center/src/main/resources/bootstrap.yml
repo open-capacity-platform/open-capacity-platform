@@ -1,0 +1,21 @@
+#端口
+server:
+#  port: 5000    #固定端口
+   port: 5006 #随机端口
+#服务名称
+spring:
+  application:
+    name: log-center
+  cloud:
+    nacos:
+      discovery:
+        server-addr:  127.0.0.1:8848
+          
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
